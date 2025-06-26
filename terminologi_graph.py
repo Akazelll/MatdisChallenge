@@ -1,12 +1,13 @@
-import networkx as nx
-import matplotlib.pyplot as plt
-import random
-from collections import defaultdict
-import itertools
+import networkx as nx #menambah simpul dan sisi, menghitung jumlah derajat simpul yang di inisialkan nx
+import matplotlib.pyplot as plt #untuk memvisualisasikan graph yang di input
+import random #untuk memilih loop/sisi ganda secara acak 
+from collections import defaultdict #untuk pengelompokkan sisi yang ganda dan loop untuk aksi jenis graph 
+import itertools #menghasilakn simpul unik untuk graph yang bersyarat
 
 class VisualisasiGraf:
     
     def __init__(self):
+        #construktor default
         """Inisialisasi atribut kelas."""
         self.simpul = []
         self.derajat_awal = {}
@@ -27,19 +28,19 @@ class VisualisasiGraf:
     def _visualisasikan(self, judul="Visualisasi Graf"):
         """Mencetak visualisasi graf menggunakan matplotlib dan networkx."""
         print("\nMencetak visualisasi...")
-        pos = nx.spring_layout(self.graf, seed=42)
-        plt.figure(figsize=(12, 10))
-        ax = plt.gca()
+        pos = nx.spring_layout(self.graf, seed=42) #mengatur posisi setiap simpul 
+        plt.figure(figsize=(12, 10)) #membuat kanvas gambar dengan ukuran tertentu lebar*tinggi
+        ax = plt.gca() #mengambil sebagian kanvas untuk mengambbar
         
-        nx.draw_networkx_nodes(self.graf, pos, ax=ax, node_color='skyblue', node_size=2500)
-        nx.draw_networkx_labels(self.graf, pos, ax=ax, font_size=12, font_weight='bold')
+        nx.draw_networkx_nodes(self.graf, pos, ax=ax, node_color='skyblue', node_size=2500) # mengambar titik titik simpul 
+        nx.draw_networkx_labels(self.graf, pos, ax=ax, font_size=12, font_weight='bold') #memberikan label di setiap simpulnya yg ada di tengah lingkaran
         
         # Validasi akhir derajat sebelum menggambar
         print("\n--- Verifikasi Derajat Akhir ---")
         derajat_sesuai = True
-        for node in self.simpul:
-            derajat_target = self.derajat_awal[node]
-            derajat_aktual = self.graf.degree(node)
+        for node in self.simpul: #loop simpul
+            derajat_target = self.derajat_awal[node] #derajat yang di input
+            derajat_aktual = self.graf.degree(node) #cek derajat apakah sama dengan yang di input atau tidak
             if derajat_target != derajat_aktual:
                 print(f"Simpul {node}: Target Derajat={derajat_target}, Aktual={derajat_aktual} [TIDAK SESUAI]")
                 derajat_sesuai = False
