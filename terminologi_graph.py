@@ -112,6 +112,7 @@ class VisualisasiGraf:
             v = stubs.pop()
             key = tuple(sorted((u, v)))
 
+
             if u == v or edge_counts[key] < 2:
                 self.graf.add_edge(u, v)
                 edge_counts[key] += 1
@@ -120,6 +121,99 @@ class VisualisasiGraf:
                 random.shuffle(stubs)
 
         self._visualisasikan("Graf Dibuat")
+
+
+    def _jalur_dengan_syarat_otomatis(self):
+        """Opsi 2 (DIPERBAIKI): Membuat graf dengan jumlah loop/sisi ganda yang ditentukan."""
+        print("\n--- Opsi 2: Membuat Graf Dengan Syarat (Otomatis) ---")
+        
+        derajat_sisa = self.derajat_awal.copy()
+        
+        # 1. Input Jumlah Loop dan Sisi Ganda
+        target_loop = self._dapatkan_input_integer("Masukkan jumlah loop yang diinginkan: ")
+        target_sisi_ganda = self._dapatkan_input_integer("Masukkan jumlah sisi ganda yang diinginkan: ")
+
+        # 2. Proses Pembuatan Loop
+        print("\nMembuat loop...")
+        loop_dibuat = 0
+        for _ in range(target_loop):
+            # Cari simpul yang masih memiliki sisa derajat minimal 2 untuk membuat loop
+            kandidat_loop = [node for node, deg in derajat_sisa.items() if deg >= 2]
+            if not kandidat_loop:
+                print(f"[Peringatan] Tidak dapat membuat loop ke-{loop_dibuat + 1}. Simpul dengan sisa derajat >= 2 tidak cukup.")
+                break
+            
+            # Pilih simpul secara acak, buat loop, dan kurangi sisa derajatnya
+            pilihan_simpul = random.choice(kandidat_loop)
+            self.graf.add_edge(pilihan_simpul, pilihan_simpul)
+            derajat_sisa[pilihan_simpul] -= 2
+            loop_dibuat += 1
+            print(f"Loop ke-{loop_dibuat} dibuat pada simpul {pilihan_simpul}.")
+
+        if loop_dibuat < target_loop:
+            print(f"\n[Error] Gagal membuat loop sesuai target. Target: {target_loop}, Dibuat: {loop_dibuat}.")
+            return
+
+        # 3. Proses Pembuatan Sisi Ganda
+        print("\nMembuat sisi ganda...")
+        sisi_ganda_dibuat = 0
+        for _ in range(target_sisi_ganda):
+            # Untuk membuat sisi ganda antara dua simpul, keduanya harus punya sisa derajat minimal 2
+            # Kita perlu membuat sebuah sisi normal (derajat -1 di tiap simpul) dan sisi kedua (derajat -1 lagi)
+            kandidat_pasangan = list(itertools.combinations([n for n, d in derajat_sisa.items() if d >= 2], 2))
+            
+            if not kandidat_pasangan:
+                print(f"[Peringatan] Tidak bisa membuat sisi ganda ke-{sisi_ganda_dibuat + 1}. Pasangan simpul dengan sisa derajat >= 2 tidak cukup.")
+                break
+            
+            # Pilih pasangan simpul, buat 2 sisi di antara mereka, kurangi sisa derajat
+            u, v = random.choice(kandidat_pasangan)
+            self.graf.add_edge(u, v)
+            self.graf.add_edge(u, v)
+            derajat_sisa[u] -= 2
+            derajat_sisa[v] -= 2
+            sisi_ganda_dibuat += 1
+            print(f"Sisi ganda ke-{sisi_ganda_dibuat} dibuat antara simpul {u} dan {v}.")
+
+        if sisi_ganda_dibuat < target_sisi_ganda:
+            print(f"\n[Error] Gagal membuat sisi ganda sesuai target. Target: {target_sisi_ganda}, Dibuat: {sisi_ganda_dibuat}.")
+            return
+            
+        # 4. Melengkapi Sisa Graf (Kunci Perbaikan)
+        print("\nMelengkapi sisa graf untuk memenuhi derajat...")
+        
+        # Validasi akhir sebelum melengkapi
+        if sum(derajat_sisa.values()) % 2 != 0:
+            print("\n[Error] Sisa derajat ganjil setelah membuat syarat. Graf tidak dapat diselesaikan.")
+            return
+            
+        # Buat 'stubs' atau 'koneksi terbuka' dari sisa derajat
+        stubs_sisa = [node for node, deg in derajat_sisa.items() for _ in range(deg)]
+        random.shuffle(stubs_sisa)
+        
+        # Hubungkan sisa stubs secara acak. Ini akan menghubungkan semua bagian graf
+        # dan memastikan semua derajat terpenuhi.
+        while len(stubs_sisa) > 1:
+            u = stubs_sisa.pop()
+            v = stubs_sisa.pop()
+            
+            # Cek untuk menghindari loop dan sisi ganda yang tidak diinginkan di tahap akhir
+            # Jika hanya ada dua stubs tersisa dari simpul yang sama, loop tidak bisa dihindari.
+            max_attempts = 10
+            attempt = 0
+            while u == v and len(stubs_sisa) > 0 and attempt < max_attempts:
+                stubs_sisa.append(v)
+                random.shuffle(stubs_sisa)
+                v = stubs_sisa.pop()
+                attempt += 1
+
+            self.graf.add_edge(u, v)
+        
+        if stubs_sisa:
+            print(f"[Peringatan] Sisa satu stub yang tidak terhubung: {stubs_sisa[0]}. Derajat tidak akan terpenuhi.")
+            
+        self._visualisasikan("Graf Dibuat Dengan Syarat (Derajat Terpenuhi)")
+
 
     def jalankan(self):
         print("===== Program Visualisasi Graf =====")
