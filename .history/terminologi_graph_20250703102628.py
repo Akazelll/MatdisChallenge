@@ -90,7 +90,7 @@ class VisualisasiGraf:
                 stubs.extend([u, v])
                 random.shuffle(stubs)
 
-        self._visualisasikan("Graf Dibuat")
+        self._visualisasikan("Graf Dibuat Tanpa Syarat (Max 2 Sisi per Pasangan)")
 
     def jalankan(self):
         print("===== Program Visualisasi Graf =====")
