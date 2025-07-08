@@ -56,7 +56,7 @@ class VisualisasiGraf:
         plt.show()
         print("Visualisasi selesai ditampilkan.")
 
-    def _graf_bebas(self):
+    def _jalur_tanpa_syarat(self):
         print("\n--- Membuat Graf  ---")
         stubs = [node for node, deg in self.derajat_awal.items() for _ in range(deg)]
         random.shuffle(stubs)
@@ -90,7 +90,7 @@ class VisualisasiGraf:
             print("[Error] Total derajat ganjil. Tidak bisa buat graf.")
             return
 
-        self._graf_bebas()
+        self._jalur_tanpa_syarat()
         print("\n================ Program Selesai ================")
 
 if __name__ == '__main__':

@@ -56,7 +56,7 @@ class VisualisasiGraf:
         plt.show()
         print("Visualisasi selesai ditampilkan.")
 
-    def _graf_bebas(self):
+    def _graph_bebas(self):
         print("\n--- Membuat Graf  ---")
         stubs = [node for node, deg in self.derajat_awal.items() for _ in range(deg)]
         random.shuffle(stubs)
@@ -74,7 +74,7 @@ class VisualisasiGraf:
                 stubs.extend([u, v])
                 random.shuffle(stubs)
 
-        self._visualisasikan("===== Graf Dibuat =====")
+        self._visualisasikan("Graf Dibuat")
 
     def run(self):
         print("===== Program Visualisasi Graf =====")
@@ -86,11 +86,14 @@ class VisualisasiGraf:
         for s in self.simpul:
             self.derajat_awal[s] = self._input_int(f"Derajat simpul {s}: ")
 
-        if sum(self.derajat_awal.values()) % 2 != 0:
-            print("[Error] Total derajat ganjil. Tidak bisa buat graf.")
+        total = sum(self.derajat_awal.values())
+        print(f"
+Total derajat = {total}")
+        if total % 2 != 0:
+            print(f"[Error] Total derajat = {total} (ganjil). Jumlah ini harus genap agar graf bisa dibuat.")
             return
 
-        self._graf_bebas()
+        self._graph_bebas()
         print("\n================ Program Selesai ================")
 
 if __name__ == '__main__':
