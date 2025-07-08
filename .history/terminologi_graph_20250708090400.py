@@ -74,7 +74,7 @@ class VisualisasiGraf:
                 stubs.extend([u, v])
                 random.shuffle(stubs)
 
-        self._visualisasikan("===== Graf Dibuat =====")
+        self._visualisasikan("===== Graf Dibuat")
 
     def run(self):
         print("===== Program Visualisasi Graf =====")

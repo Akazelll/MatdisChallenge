@@ -10,7 +10,7 @@ class VisualisasiGraf:
         self.derajat_awal = {}
         self.graf = nx.MultiGraph()
 
-    def _input_int(self, prompt, min_val=0):
+    def _input_integer(self, prompt, min_val=0):
         while True:
             try:
                 value = int(input(prompt))
@@ -29,6 +29,22 @@ class VisualisasiGraf:
 
         nx.draw_networkx_nodes(self.graf, pos, ax=ax, node_color='crimson', node_size=2500)
         nx.draw_networkx_labels(self.graf, pos, ax=ax, font_size=12, font_weight='bold')
+
+        print("\n--- Verifikasi Derajat Akhir ---")
+        derajat_sesuai = True
+        for node in self.simpul:
+            target = self.derajat_awal[node]
+            actual = self.graf.degree(node)
+            if target != actual:
+                print(f"Simpul {node}: Target={target}, Aktual={actual} [TIDAK SESUAI]")
+                derajat_sesuai = False
+            else:
+                print(f"Simpul {node}: Target={target}, Aktual={actual} [OK]")
+
+        if not derajat_sesuai:
+            print("[Peringatan] Derajat akhir tidak sesuai dengan input awal!")
+        else:
+            print("Semua derajat akhir sesuai dengan input awal.")
 
         try:
             labels = {n: f'd={self.graf.degree(n)}' for n in self.graf.nodes()}
@@ -56,8 +72,8 @@ class VisualisasiGraf:
         plt.show()
         print("Visualisasi selesai ditampilkan.")
 
-    def _jalur_tanpa_syarat(self):
-        print("\n--- Membuat Graf  ---")
+    def _graph_bebas(self):
+        print("\n--- Membuat Graf Tanpa Syarat Tambahan (dengan batas sisi maksimal 2 per pasangan simpul) ---")
         stubs = [node for node, deg in self.derajat_awal.items() for _ in range(deg)]
         random.shuffle(stubs)
         edge_counts = defaultdict(int)
@@ -74,17 +90,17 @@ class VisualisasiGraf:
                 stubs.extend([u, v])
                 random.shuffle(stubs)
 
-        self._visualisasikan("===== Graf Dibuat =====")
+        self._visualisasikan("Graf Dibuat")
 
-    def run(self):
+    def jalankan(self):
         print("===== Program Visualisasi Graf =====")
-        jumlah_simpul = self._input_int("Masukkan jumlah simpul: ", min_val=1)
+        jumlah_simpul = self._input_integer("Masukkan jumlah simpul: ", min_val=1)
         self.simpul = [str(i) for i in range(1, jumlah_simpul + 1)]
         self.graf.add_nodes_from(self.simpul)
 
         print("\n--- Input Derajat Simpul ---")
         for s in self.simpul:
-            self.derajat_awal[s] = self._input_int(f"Derajat simpul {s}: ")
+            self.derajat_awal[s] = self._input_integer(f"Derajat simpul {s}: ")
 
         if sum(self.derajat_awal.values()) % 2 != 0:
             print("[Error] Total derajat ganjil. Tidak bisa buat graf.")
@@ -95,4 +111,4 @@ class VisualisasiGraf:
 
 if __name__ == '__main__':
     program_graf = VisualisasiGraf()
-    program_graf.run()
+    program_graf.jalankan()

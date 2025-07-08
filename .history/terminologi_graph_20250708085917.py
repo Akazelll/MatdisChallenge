@@ -30,6 +30,12 @@ class VisualisasiGraf:
         nx.draw_networkx_nodes(self.graf, pos, ax=ax, node_color='crimson', node_size=2500)
         nx.draw_networkx_labels(self.graf, pos, ax=ax, font_size=12, font_weight='bold')
 
+        ??
+        if not derajat_sesuai:
+            print("[Peringatan] Derajat akhir tidak sesuai dengan input awal!")
+        else:
+            print("Semua derajat akhir sesuai dengan input awal.")
+
         try:
             labels = {n: f'd={self.graf.degree(n)}' for n in self.graf.nodes()}
             label_pos = {k: (v[0], v[1] - 0.12) for k, v in pos.items()}
@@ -57,7 +63,6 @@ class VisualisasiGraf:
         print("Visualisasi selesai ditampilkan.")
 
     def _jalur_tanpa_syarat(self):
-        print("\n--- Membuat Graf  ---")
         stubs = [node for node, deg in self.derajat_awal.items() for _ in range(deg)]
         random.shuffle(stubs)
         edge_counts = defaultdict(int)
@@ -74,7 +79,7 @@ class VisualisasiGraf:
                 stubs.extend([u, v])
                 random.shuffle(stubs)
 
-        self._visualisasikan("===== Graf Dibuat =====")
+        self._visualisasikan("Graf Dibuat")
 
     def run(self):
         print("===== Program Visualisasi Graf =====")
