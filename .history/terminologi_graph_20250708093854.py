@@ -22,7 +22,7 @@ class VisualisasiGraf:
                 print("Input tidak valid. Harap masukkan angka int.")
 
     def _visualisasikan(self, judul="Visualisasi Graf"):
-        print("\nMencetak...")
+        print("\nMencetak visualisasi...")
         pos = nx.spring_layout(self.graf, seed=42)
         plt.figure(figsize=(12, 10))
         ax = plt.gca()
@@ -91,6 +91,7 @@ class VisualisasiGraf:
             return
 
         self._graf_bebas()
+        print("\n================ Program Selesai ================")
 
 if __name__ == '__main__':
     program_graf = VisualisasiGraf()

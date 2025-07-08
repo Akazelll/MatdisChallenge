@@ -91,6 +91,7 @@ class VisualisasiGraf:
             return
 
         self._graf_bebas()
+        print("\n================ Program Selesai ================")
 
 if __name__ == '__main__':
     program_graf = VisualisasiGraf()

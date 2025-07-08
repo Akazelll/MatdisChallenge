@@ -10,19 +10,19 @@ class VisualisasiGraf:
         self.derajat_awal = {}
         self.graf = nx.MultiGraph()
 
-    def _input_int(self, display, min_val=0):
+    def _input_int(self, teks, min_val=0):
         while True:
             try:
-                value = int(input(display))
+                value = int(input(teks))
                 if value >= min_val:
                     return value
                 else:
                     print(f"Input harus >= {min_val}.")
             except ValueError:
-                print("Input tidak valid. Harap masukkan angka int.")
+                print("Input tidak valid. Harap masukkan angka.")
 
     def _visualisasikan(self, judul="Visualisasi Graf"):
-        print("\nMencetak...")
+        print("\nMencetak visualisasi...")
         pos = nx.spring_layout(self.graf, seed=42)
         plt.figure(figsize=(12, 10))
         ax = plt.gca()
@@ -91,6 +91,7 @@ class VisualisasiGraf:
             return
 
         self._graf_bebas()
+        print("\n================ Program Selesai ================")
 
 if __name__ == '__main__':
     program_graf = VisualisasiGraf()

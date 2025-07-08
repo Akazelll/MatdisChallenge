@@ -24,7 +24,7 @@ class VisualisasiGraf:
     def _visualisasikan(self, judul="Visualisasi Graf"):
         print("\nMencetak...")
         pos = nx.spring_layout(self.graf, seed=42)
-        plt.figure(figsize=(12, 10))
+        plt.figure(figsize=(16, 9))
         ax = plt.gca()
 
         nx.draw_networkx_nodes(self.graf, pos, ax=ax, node_color='crimson', node_size=2500)

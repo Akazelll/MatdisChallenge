@@ -19,10 +19,10 @@ class VisualisasiGraf:
                 else:
                     print(f"Input harus >= {min_val}.")
             except ValueError:
-                print("Input tidak valid. Harap masukkan angka int.")
+                print("Input tidak valid. Harap masukkan angka.")
 
     def _visualisasikan(self, judul="Visualisasi Graf"):
-        print("\nMencetak...")
+        print("\nMencetak visualisasi...")
         pos = nx.spring_layout(self.graf, seed=42)
         plt.figure(figsize=(12, 10))
         ax = plt.gca()
@@ -46,7 +46,7 @@ class VisualisasiGraf:
                 for i, e in enumerate(edges):
                     rad = 0.1 + (i * 0.1)
                     nx.draw_networkx_edges(self.graf, pos, edgelist=[e], ax=ax, connectionstyle=f'arc3,rad={rad}')
-            elif len(edges) <= 2:
+            else if len(edges) <= 2:
                 for i, e in enumerate(edges):
                     rad = -0.1 + i * 0.2
                     nx.draw_networkx_edges(self.graf, pos, edgelist=[e], ax=ax, connectionstyle=f'arc3,rad={rad}')
@@ -91,6 +91,7 @@ class VisualisasiGraf:
             return
 
         self._graf_bebas()
+        print("\n================ Program Selesai ================")
 
 if __name__ == '__main__':
     program_graf = VisualisasiGraf()
