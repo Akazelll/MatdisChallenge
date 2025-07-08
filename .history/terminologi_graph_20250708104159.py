@@ -23,7 +23,7 @@ class VisualisasiGraf:
 
     def _visualisasikan(self, judul="Visualisasi Graf"):
         print("\nMencetak...")
-        pos = nx.spring_layout(self.graf)
+        pos = nx.spring_layout(self.graf, seed=42)
         plt.figure(figsize=(12, 10))
         ax = plt.gca()
 
@@ -34,8 +34,8 @@ class VisualisasiGraf:
             labels = {n: f'd={self.graf.degree(n)}' for n in self.graf.nodes()}
             label_pos = {k: (v[0], v[1] - 0.12) for k, v in pos.items()}
             nx.draw_networkx_labels(self.graf, label_pos, labels=labels, font_size=10, font_color='darkred')
-        except Exception as e:
-            print(f"Gagal menggambar label derajat: {e}")
+        #except Exception as e:
+         #   print(f"Gagal menggambar label derajat: {e}")
 
         edge_groups = defaultdict(list)
         for u, v in self.graf.edges():
@@ -57,7 +57,7 @@ class VisualisasiGraf:
         print("Visualisasi selesai ditampilkan.")
 
     def _graf_bebas(self):
-        print("\n--- Membuat Graf tak Berarah ---")
+        print("\n--- Membuat Graf  ---")
         stubs = [node for node, deg in self.derajat_awal.items() for _ in range(deg)]
         random.shuffle(stubs)
         edge_counts = defaultdict(int)
@@ -77,7 +77,7 @@ class VisualisasiGraf:
         self._visualisasikan("===== Graf Dibuat =====")
 
     def run(self):
-        print("===== Program Visualisasi Graf tak Berarah =====")
+        print("===== Program Visualisasi Graf =====")
         jumlah_simpul = self._input_int("Masukkan jumlah simpul: ", min_val=1)
         self.simpul = [str(i) for i in range(1, jumlah_simpul + 1)]
         self.graf.add_nodes_from(self.simpul)

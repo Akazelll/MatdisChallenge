@@ -23,7 +23,7 @@ class VisualisasiGraf:
 
     def _visualisasikan(self, judul="Visualisasi Graf"):
         print("\nMencetak...")
-        pos = nx.spring_layout(self.graf)
+        pos = nx.spring_layout(self.graf, seed=42)
         plt.figure(figsize=(12, 10))
         ax = plt.gca()
 
@@ -93,5 +93,5 @@ class VisualisasiGraf:
         self._graf_bebas()
 
 if __name__ == '__main__':
-    program_graf = VisualisasiGraf()
+    program_graf = VisualisasiGraf();
     program_graf.run()
